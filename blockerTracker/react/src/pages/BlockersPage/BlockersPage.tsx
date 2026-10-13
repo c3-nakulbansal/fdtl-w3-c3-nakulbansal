@@ -142,13 +142,17 @@ export default function BlockersPage() {
       .catch((err) => setError(errorText(err)));
   }, []);
 
+  const closeDialog = () => {
+    setPending(null);
+    setNote('');
+  };
+
   const saveChange = () => {
     if (!pending) return;
     setSaving(true);
     c3MemberAction('Blocker', 'changeStatus', { id: pending.row.id }, [pending.status, note || null])
       .then(() => {
-        setPending(null);
-        setNote('');
+        closeDialog();
         setExpanded({});
         load();
       })
@@ -170,7 +174,9 @@ export default function BlockersPage() {
           dataItemKey="status"
           value={null}
           defaultItem={{ status: row.status, label: 'Change status…' }}
-          onChange={(event: DropDownListChangeEvent) => setPending({ row, status: event.value.status })}
+          onChange={(event: DropDownListChangeEvent) => {
+            if (event.value.status !== row.status) setPending({ row, status: event.value.status });
+          }}
           size="small"
         />
       </td>
@@ -243,7 +249,7 @@ export default function BlockersPage() {
       </Chart>
 
       {pending && (
-        <Dialog title={`Move to "${STATUS_LABELS[pending.status]}"`} onClose={() => setPending(null)} width={460}>
+        <Dialog title={`Move to "${STATUS_LABELS[pending.status]}"`} onClose={closeDialog} width={460}>
           <p className="mb-2 text-sm">{pending.row.name}</p>
           <TextArea
             value={note}
@@ -252,7 +258,7 @@ export default function BlockersPage() {
             rows={3}
           />
           <DialogActionsBar>
-            <Button onClick={() => setPending(null)}>Cancel</Button>
+            <Button onClick={closeDialog}>Cancel</Button>
             <Button themeColor="primary" disabled={saving} onClick={saveChange}>
               Save
             </Button>
