@@ -66,7 +66,7 @@ export interface DocumentTemplate {
   estimatedTime: string;
 }
 
-export type BlockerStatus = 'Open' | 'WaitingOnCustomer' | 'WaitingOnC3' | 'Resolved';
+export type BlockerStatus = 'WaitingOnCustomer' | 'WaitingOnC3' | 'Resolved';
 
 export interface Blocker {
   id: string;
