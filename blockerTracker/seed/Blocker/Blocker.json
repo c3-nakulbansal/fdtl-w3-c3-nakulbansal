@@ -1,0 +1,9 @@
+[
+  {"id": "seed_blocker_acmeVpn", "name": "VPN access for the FDE team", "customer": "Acme Steel", "owner": "Priya Shah"},
+  {"id": "seed_blocker_acmeHistorian", "name": "Read access to the plant historian", "customer": "Acme Steel", "owner": "Priya Shah"},
+  {"id": "seed_blocker_acmeSso", "name": "SSO group mapping for plant supervisors", "customer": "Acme Steel", "owner": "Marcus Lee"},
+  {"id": "seed_blocker_northwindExtract", "name": "Monthly flight-ops data extract", "customer": "Northwind Aviation", "owner": "Dana Okafor"},
+  {"id": "seed_blocker_northwindUat", "name": "Testers for user acceptance testing", "customer": "Northwind Aviation", "owner": "Dana Okafor"},
+  {"id": "seed_blocker_globexSecurity", "name": "Security questionnaire sign-off", "customer": "Globex Energy", "owner": "Marcus Lee"},
+  {"id": "seed_blocker_globexLicensing", "name": "Model licensing terms", "customer": "Globex Energy", "owner": "Priya Shah"}
+]

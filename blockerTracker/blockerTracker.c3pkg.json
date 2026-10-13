@@ -1,7 +1,7 @@
 {
-  "author": "{{author}}",
+  "author": "Nakul Bansal",
   "name": "blockerTracker",
-  "description": "{{description}}",
+  "description": "Tracks what is blocking customer engagements and how long each blocker has waited, and on whom.",
   "dependencies": {},
   "version": "1.0.0"
 }

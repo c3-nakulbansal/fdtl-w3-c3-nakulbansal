@@ -1,0 +1,14 @@
+/**
+ * Something stopping a customer engagement from moving forward. `name` is the blocker's title.
+ * Status is not stored here: the current status is the {@link BlockerStatusChange} with no `endedAt`.
+ */
+entity type Blocker {
+  customer: !string
+  owner: !string
+  statusChanges: [BlockerStatusChange](blocker)
+
+  /**
+   * Ends the current status period and starts a new one at the same instant.
+   */
+  changeStatus: member function(status: !string, note: string): BlockerStatusChange js
+}

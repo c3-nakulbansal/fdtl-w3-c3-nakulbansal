@@ -1,0 +1,16 @@
+/**
+ * One period a {@link Blocker} spent in a status. The period with no `endedAt` is the current status.
+ * `endedAt` repeats the next period's `changedAt` so the database can sum durations without a self-join.
+ */
+entity type BlockerStatusChange {
+  blocker: !Blocker
+  status: !string enum('Open', 'WaitingOnCustomer', 'WaitingOnC3', 'Resolved')
+  changedAt: !datetime
+  endedAt: datetime
+  note: string
+
+  /**
+   * Hours spent in each unresolved status, per customer, with open periods counted up to now.
+   */
+  hoursByCustomerAndStatus: function(): [json] js
+}
