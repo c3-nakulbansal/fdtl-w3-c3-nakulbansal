@@ -257,6 +257,7 @@ export default function BlockersPage() {
           data={showResolved ? rows : active}
           dataItemKey="id"
           autoProcessData
+          scrollable="none"
           sortable
           defaultSort={[{ field: 'daysInStatus', dir: 'desc' }]}
           detail={HistoryDetail}

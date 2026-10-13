@@ -10,3 +10,5 @@ gen/
 .env.local
 blockerTracker/.fingerprints.txt
 blockerTracker/ui/
+blockerTracker/react/telerik-license.txt
+blockerTracker/react/kendo-ui-license.txt
