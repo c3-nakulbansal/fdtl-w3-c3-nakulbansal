@@ -23,7 +23,7 @@ import { Dialog, DialogActionsBar } from '@progress/kendo-react-dialogs';
 import { Button } from '@progress/kendo-react-buttons';
 import { TextArea } from '@progress/kendo-react-inputs';
 import { c3Action, c3MemberAction } from '@/c3Action';
-import { BlockerStatus, BlockerStatusChange, StatusHours } from '@/Interfaces';
+import { BlockerStatus, BlockerStatusChange, StatusHours, User } from '@/Interfaces';
 
 const STATUS_LABELS: Record<BlockerStatus, string> = {
   Open: 'Open',
@@ -116,6 +116,7 @@ export default function BlockersPage() {
   const [pending, setPending] = useState<PendingChange | null>(null);
   const [note, setNote] = useState('');
   const [saving, setSaving] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   const load = useCallback(() => {
     Promise.all([
@@ -134,6 +135,12 @@ export default function BlockersPage() {
   }, []);
 
   useEffect(load, [load]);
+
+  useEffect(() => {
+    c3Action('User', 'myUser', [])
+      .then(setUser)
+      .catch((err) => setError(errorText(err)));
+  }, []);
 
   const saveChange = () => {
     if (!pending) return;
@@ -186,11 +193,15 @@ export default function BlockersPage() {
 
   return (
     <div className="flex flex-col gap-6 p-6">
-      <header>
-        <h1 className="text-2xl font-semibold">Customer blockers</h1>
-        <p className="text-sm text-secondary">
-          What is holding up each engagement, who it is waiting on, and for how long. Expand a row for its full history.
-        </p>
+      <header className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold">Customer blockers</h1>
+          <p className="text-sm text-secondary">
+            What is holding up each engagement, who it is waiting on, and for how long. Expand a row for its full
+            history.
+          </p>
+        </div>
+        {user && <span className="text-sm text-secondary">Signed in as {user.name}</span>}
       </header>
 
       {error && <p className="text-sm text-danger">Could not load blockers: {error}</p>}
