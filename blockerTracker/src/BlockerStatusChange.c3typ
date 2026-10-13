@@ -4,7 +4,7 @@
  */
 entity type BlockerStatusChange {
   blocker: !Blocker
-  status: !string enum('Open', 'WaitingOnCustomer', 'WaitingOnC3', 'Resolved')
+  status: !string enum('WaitingOnCustomer', 'WaitingOnC3', 'Resolved')
   changedAt: !datetime
   endedAt: datetime
   note: string
