@@ -7,7 +7,7 @@
  * This material may be covered by one or more patents or pending patent applications.
  */
 
-import { House } from 'lucide-react';
+import { OctagonAlert } from 'lucide-react';
 
 import { NavigationItem } from '@/types/navigation';
 
@@ -20,12 +20,12 @@ import { NavigationItem } from '@/types/navigation';
  */
 export const navigationConfig: NavigationItem[] = [
   {
-    id: 'demo',
+    id: 'blockers',
     path: '/',
-    icon: House,
-    iconActive: House,
-    label: 'Demo',
-    tooltip: 'Dashboard Overview',
+    icon: OctagonAlert,
+    iconActive: OctagonAlert,
+    label: 'Blockers',
+    tooltip: 'Customer blockers',
   },
 
   /*

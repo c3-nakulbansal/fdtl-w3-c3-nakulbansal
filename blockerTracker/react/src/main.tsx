@@ -11,6 +11,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 import App from './App';
+import '@progress/kendo-theme-default/dist/all.css';
 import './globals.css'; // C3 Design System with Tailwind CSS
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

@@ -65,3 +65,28 @@ export interface DocumentTemplate {
   description: string;
   estimatedTime: string;
 }
+
+export type BlockerStatus = 'Open' | 'WaitingOnCustomer' | 'WaitingOnC3' | 'Resolved';
+
+export interface Blocker {
+  id: string;
+  name: string;
+  customer: string;
+  owner: string;
+}
+
+export interface BlockerStatusChange {
+  id: string;
+  blocker: Blocker;
+  status: BlockerStatus;
+  changedAt: string;
+  endedAt?: string;
+  note?: string;
+}
+
+/** One row of `BlockerStatusChange.hoursByCustomerAndStatus`. */
+export interface StatusHours {
+  customer: string;
+  status: BlockerStatus;
+  hours: number;
+}
