@@ -13,4 +13,10 @@ entity type BlockerStatusChange {
    * Hours spent in each unresolved status, per customer, with open periods counted up to now.
    */
   hoursByCustomerAndStatus: function(): [json] js
+
+  /**
+   * Per month and waiting status: how many waits started and their total hours, open periods up to now.
+   * A wait is credited to the month it started. `customer` limits it to one customer; null means all.
+   */
+  monthlyWaits: function(customer: string): [json] js
 }
