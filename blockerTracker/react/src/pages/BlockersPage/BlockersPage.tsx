@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Grid,
   GridColumn,
@@ -6,25 +6,15 @@ import {
   type GridDetailRowProps,
   type GridDetailExpandChangeEvent,
 } from '@progress/kendo-react-grid';
-import {
-  Chart,
-  ChartCategoryAxis,
-  ChartCategoryAxisItem,
-  ChartLegend,
-  ChartSeries,
-  ChartSeriesItem,
-  ChartTooltip,
-  ChartValueAxis,
-  ChartValueAxisItem,
-} from '@progress/kendo-react-charts';
 import { DropDownList, type DropDownListChangeEvent } from '@progress/kendo-react-dropdowns';
 import { Dialog, DialogActionsBar } from '@progress/kendo-react-dialogs';
 import { Button } from '@progress/kendo-react-buttons';
 import { Switch, TextArea } from '@progress/kendo-react-inputs';
 import { c3Action, c3MemberAction } from '@/c3Action';
 import { BlockerStatus, BlockerStatusChange, StatusHours, User } from '@/Interfaces';
+import BlockerChart from './BlockerChart';
 import NewBlockerDialog from './NewBlockerDialog';
-import { STATUS_COLORS, STATUS_LABELS, STATUSES, WAITING_STATUSES } from './blockerStatus';
+import { STATUS_COLORS, STATUS_LABELS, STATUSES } from './blockerStatus';
 
 const MS_PER_DAY = 86400000;
 
@@ -137,6 +127,7 @@ export default function BlockersPage() {
   const [note, setNote] = useState('');
   const [saving, setSaving] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [version, setVersion] = useState(0);
 
   const load = useCallback(() => {
     Promise.all([
@@ -169,6 +160,7 @@ export default function BlockersPage() {
 
   const refresh = () => {
     setExpanded({});
+    setVersion((v) => v + 1);
     load();
   };
 
@@ -221,20 +213,6 @@ export default function BlockersPage() {
   };
   const onCustomer = waitingSummary('WaitingOnCustomer');
   const onC3 = waitingSummary('WaitingOnC3');
-
-  // Memoized so expanding a row or opening a dialog does not redraw the chart.
-  const { customers, series } = useMemo(() => {
-    const daysOf = (customer: string, status: BlockerStatus) => {
-      const match = hours.find((row) => row.customer === customer && row.status === status);
-      return match ? Math.round(match.hours / 24) : 0;
-    };
-    const total = (customer: string) => WAITING_STATUSES.reduce((sum, status) => sum + daysOf(customer, status), 0);
-    const names = Array.from(new Set(hours.map((row) => row.customer))).sort((a, b) => total(b) - total(a));
-    return {
-      customers: names,
-      series: WAITING_STATUSES.map((status) => ({ status, data: names.map((name) => daysOf(name, status)) })),
-    };
-  }, [hours]);
 
   const knownCustomers = Array.from(new Set(rows.map((row) => row.customer))).sort();
   const knownOwners = Array.from(new Set(rows.map((row) => row.owner))).sort();
@@ -295,39 +273,7 @@ export default function BlockersPage() {
         </Grid>
       </section>
 
-      <section className="flex flex-col gap-1">
-        <h2 className="text-lg font-semibold">Days lost waiting, per customer</h2>
-        <p className="text-sm text-secondary">All blockers, including resolved ones, split by who we were waiting on.</p>
-        <Chart style={{ height: 80 + customers.length * 70 }}>
-          <ChartLegend position="top" />
-          <ChartTooltip format="{0} days" />
-          <ChartCategoryAxis>
-            <ChartCategoryAxisItem categories={customers} />
-          </ChartCategoryAxis>
-          <ChartValueAxis>
-            <ChartValueAxisItem title={{ text: 'Days' }} />
-          </ChartValueAxis>
-          <ChartSeries>
-            {series.map(({ status, data }) => (
-              <ChartSeriesItem
-                key={status}
-                type="bar"
-                stack
-                name={STATUS_LABELS[status]}
-                color={STATUS_COLORS[status]}
-                data={data}
-                labels={{
-                  visible: true,
-                  position: 'center',
-                  color: '#fff',
-                  background: 'transparent',
-                  content: (point) => (point.value ? `${point.value} d` : ''),
-                }}
-              />
-            ))}
-          </ChartSeries>
-        </Chart>
-      </section>
+      <BlockerChart hours={hours} version={version} onError={setError} />
 
       {creating && (
         <NewBlockerDialog

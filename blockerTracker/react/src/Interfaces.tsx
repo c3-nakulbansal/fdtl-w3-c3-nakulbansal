@@ -90,3 +90,12 @@ export interface StatusHours {
   status: BlockerStatus;
   hours: number;
 }
+
+/** One row of `BlockerStatusChange.monthlyWaits`. */
+export interface MonthlyWaits {
+  year: number;
+  month: number;
+  status: BlockerStatus;
+  waits: number;
+  hours: number;
+}
